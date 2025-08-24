@@ -1,7 +1,5 @@
-// assets/app.js (robust version)
-// - Tries several likely post.json paths
-// - Detects file:// and suggests running a local server
-// - Shows helpful UI messages and logs verbose errors
+// assets/app.js - GitHub Pages friendly version
+// Computes a correct basePath for both username.github.io (root) and project pages (username.github.io/repo/)
 
 const postsListEl = document.getElementById('posts-list');
 const postContentEl = document.getElementById('post-content');
@@ -10,117 +8,108 @@ const searchInput = document.getElementById('search');
 
 let posts = [];
 
-// Helpful UI message
+// compute basePath: keep trailing slash. Examples:
+//  - user site:    location.pathname = '/'        -> basePath = '/'
+//  - project site: location.pathname = '/repo/'   -> basePath = '/repo/'
+//  - index.html served at '/repo/index.html' -> basePath '/repo/'
+function computeBasePath() {
+  let p = location.pathname || '/';
+  // if pathname ends with '/', use it as-is
+  if (p.endsWith('/')) return p;
+  // otherwise strip last segment (like '/repo/index.html' -> '/repo/')
+  return p.substring(0, p.lastIndexOf('/') + 1) || '/';
+}
+const basePath = computeBasePath();
+
+// helper to build absolute-ish URL for fetch (safe on GH Pages)
+function url(path) {
+  // if path already starts with http(s) return as-is
+  if (/^https?:\/\//.test(path)) return path;
+  // avoid double slashes when joining
+  if (basePath.endsWith('/') && path.startsWith('/')) return basePath + path.slice(1);
+  if (!basePath.endsWith('/') && !path.startsWith('/')) return basePath + path;
+  return basePath + path.replace(/^\.\//, '');
+}
+
+// friendly UI messages
 function showSidebarMessage(html) {
   postsListEl.innerHTML = `<li style="color:#6b7280; padding:8px;">${html}</li>`;
 }
 
-// If opened directly with file://, warn user (fetching files commonly fails)
+// warn when opened via file://
 if (location.protocol === 'file:') {
-  console.warn('Page is opened via file:// — fetching local files may fail. Run a local server (e.g. python -m http.server) and reload.');
-  showSidebarMessage('You opened this page with <code>file://</code>. Please run a local static server (e.g. <code>python -m http.server</code>) and reload — otherwise posts may not load.');
+  console.warn('Opened with file:// — use a local static server to test (e.g. python -m http.server).');
+  showSidebarMessage('Open via a local server (e.g. <code>python -m http.server</code>) or view on GitHub Pages.');
 }
 
-// try fetching a list of candidate index paths
-async function fetchFirstSuccessful(paths) {
-  for (const p of paths) {
-    try {
-      const res = await fetch(p);
-      if (!res.ok) {
-        console.info(`fetch ${p} -> ${res.status}`);
-        continue;
-      }
-      // try parse JSON if endpoint looks like JSON
-      const text = await res.text();
-      // quick sanity: if it's empty skip
-      if (!text || text.trim().length === 0) {
-        console.info(`${p} returned empty content`);
-        continue;
-      }
-      // attempt to parse as JSON for post index
-      try {
-        const json = JSON.parse(text);
-        console.info(`Loaded index from ${p}`);
-        return { path: p, data: json };
-      } catch (err) {
-        // if caller expects raw text, return text
-        console.info(`Loaded raw text from ${p}`);
-        return { path: p, data: text };
-      }
-    } catch (err) {
-      console.info(`fetch ${p} failed:`, err);
-      // try next
-    }
+async function fetchJson(path) {
+  try {
+    const res = await fetch(url(path));
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return await res.json();
+  } catch (err) {
+    throw err;
   }
-  throw new Error('All fetch attempts failed');
+}
+
+async function fetchText(path) {
+  try {
+    const res = await fetch(url(path));
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return await res.text();
+  } catch (err) {
+    throw err;
+  }
 }
 
 async function loadPostsIndex() {
-  // candidate locations to try (relative before absolute)
-  const candidates = [
-    'posts/post.json',
-    './posts/post.json',
-    '/posts/post.json',     // sometimes user used leading slash
-    'post.json',
-    './post.json'
-  ];
-
-  try {
-    const result = await fetchFirstSuccessful(candidates);
-    if (!Array.isArray(result.data)) {
-      console.error('posts/post.json did not return an array. Received:', result.data);
-      showSidebarMessage('Error: posts/post.json must be a JSON array. Check console.');
+  // try common index filenames (relative to basePath)
+  const candidates = ['posts/post.json', './posts/post.json', 'post.json', './post.json'];
+  for (const c of candidates) {
+    try {
+      const data = await fetchJson(c);
+      if (!Array.isArray(data)) {
+        console.error(`Index ${c} did not return an array`, data);
+        continue;
+      }
+      posts = data.map((p, i) => ({
+        id: p.id || `post-${i}`,
+        title: p.title || `Untitled ${i+1}`,
+        tags: p.tags || [],
+        date: p.date || '',
+        file: p.file || null,
+        md: p.md || null
+      }));
+      console.info(`Loaded ${posts.length} posts from ${url(c)}`);
       return;
+    } catch (err) {
+      console.info(`Could not load index ${url(c)}:`, err.message || err);
+      // try next
     }
-    posts = result.data.map((p, i) => ({
-      id: p.id || `post-${i}`,
-      title: p.title || `Untitled ${i+1}`,
-      tags: p.tags || [],
-      date: p.date || '',
-      file: p.file || null,
-      md: p.md || null
-    }));
-    console.log(`Loaded ${posts.length} posts (from ${result.path}).`);
-  } catch (err) {
-    console.error('Could not load posts index:', err);
-    showSidebarMessage('Could not load posts/post.json — check the console for details.');
-    return;
   }
+  showSidebarMessage('Could not load posts index. Make sure <code>posts/post.json</code> exists and is valid JSON.');
 }
 
 async function loadMarkdownForPost(post) {
   if (post.md) return post.md;
-
-  // candidate markdown paths to try
   const candidates = [];
   if (post.file) candidates.push(post.file);
-  // typical fallback patterns
   candidates.push(`posts/${post.id}.md`);
-  candidates.push(`./posts/${post.id}.md`);
-  candidates.push(`/posts/${post.id}.md`);
   candidates.push(`${post.id}.md`);
-  candidates.push(`./${post.id}.md`);
-
-  for (const path of candidates) {
+  candidates.push(`./posts/${post.id}.md`);
+  for (const c of candidates) {
     try {
-      const res = await fetch(path);
-      if (!res.ok) {
-        console.info(`Markdown fetch ${path} -> ${res.status}`);
-        continue;
-      }
-      const text = await res.text();
-      if (text && text.trim().length > 0) {
+      const text = await fetchText(c);
+      if (text && text.trim().length) {
         post.md = text;
-        console.info(`Loaded markdown for ${post.id} from ${path}`);
+        console.info(`Loaded markdown for ${post.id} from ${url(c)}`);
         return text;
       }
     } catch (err) {
-      console.info(`Markdown fetch ${path} failed:`, err);
-      continue;
+      console.info(`Could not fetch markdown ${url(c)}:`, err.message || err);
     }
   }
-  // final fallback content
-  const fallback = `# Error\nCould not load markdown for ${post.id}. Tried ${candidates.join(', ')}.`;
+  const fallback = `# Error\nCould not load markdown for ${post.id}. Tried: ${candidates.join(', ')}`;
   post.md = fallback;
   console.error(fallback);
   return fallback;
@@ -167,23 +156,14 @@ function renderList(filter = '') {
   filtered.forEach((p, i) => {
     const li = createListItem(p);
     postsListEl.appendChild(li);
-    if (i === 0) {
-      // auto-open first post
-      setTimeout(() => li.click(), 0);
-    }
+    if (i === 0) li.click();
   });
 }
 
-searchInput.addEventListener('input', (e) => {
-  renderList(e.target.value);
-});
+searchInput.addEventListener('input', (e) => renderList(e.target.value));
 
-// start
 (async function init() {
   await loadPostsIndex();
-  if (!posts.length) {
-    // message already shown by loadPostsIndex
-    return;
-  }
+  if (!posts.length) return;
   renderList();
 })();
