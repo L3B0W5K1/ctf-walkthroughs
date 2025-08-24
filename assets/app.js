@@ -1,9 +1,4 @@
 // Simple client-side app to list and render markdown walkthroughs.
-const frag = document.createDocumentFragment();
-tags.forEach(tag=>{
-const b = document.createElement('button');
-b.className='tag';
-b.textContent = tag;
 b.onclick = ()=> filterByTag(tag);
 frag.appendChild(b);
 })
@@ -23,7 +18,7 @@ postsListEl.appendChild(li);
 }
 
 
-function escapeHtml(s){ return s ? s.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c])) : '' }
+function escapeHtml(s){ return s ? s.replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c])) : '' }
 
 
 async function showPost(slug){
@@ -32,11 +27,11 @@ if(!p){ postContentEl.innerHTML = '<p>Walkthrough not found.</p>'; return }
 history.pushState({post:slug}, '', `?post=${encodeURIComponent(slug)}`);
 postMetaEl.innerHTML = `<h2>${escapeHtml(p.title)}</h2><div class="post-meta">${p.date} • ${ (p.tags||[]).map(t=>`<span class=\"tag\">${escapeHtml(t)}</span>`).join(' ') }</div>`;
 try{
-const r = await fetch('/posts/' + p.file);
+const r = await fetch('posts/' + p.file);
 const md = await r.text();
 postContentEl.innerHTML = marked.parse(md);
 // make external links open in new tab
-postContentEl.querySelectorAll('a').forEach(a=>{ if(a.hostname!==location.hostname) a.target='_blank'; });
+postContentEl.querySelectorAll('a').forEach(a=>{ try{ if(a.hostname!==location.hostname) a.target='_blank'; }catch(e){ /* relative links may throw */ } });
 }catch(e){ postContentEl.innerHTML = '<p>Unable to load post file.</p>'; console.error(e); }
 }
 
