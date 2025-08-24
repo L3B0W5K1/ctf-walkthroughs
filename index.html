@@ -4,14 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CTF Walkthroughs</title>
-<link rel="stylesheet" href="/assets/style.css" />
+<!-- Use relative path so project-pages (username.github.io/repo/) find the file correctly -->
+<link rel="stylesheet" href="assets/style.css" />
 <!-- marked.js CDN for client-side Markdown parsing -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 <header class="site-header">
 <div class="container">
-<h1><a href="/">CTF Walkthroughs</a></h1>
+<!-- Title is NOT a link anymore -->
+<h1>CTF Walkthroughs</h1>
 <input id="search" placeholder="Search walkthroughs or tags..." />
 </div>
 </header>
@@ -37,6 +39,7 @@
 </footer>
 
 
-<script src="/assets/app.js"></script>
+<!-- Use relative path for script as well -->
+<script src="assets/app.js"></script>
 </body>
 </html>
