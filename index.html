@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CTF Walkthroughs</title>
+<link rel="stylesheet" href="/assets/style.css" />
+<!-- marked.js CDN for client-side Markdown parsing -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<h1><a href="/">CTF Walkthroughs</a></h1>
+<input id="search" placeholder="Search walkthroughs or tags..." />
+</div>
+</header>
+
+
+<main class="container main-grid">
+<aside class="sidebar">
+<h2>Walkthroughs</h2>
+<div id="filters"></div>
+<ul id="posts-list" class="posts-list"></ul>
+</aside>
+
+
+<section class="content">
+<div id="post-meta" class="post-meta"></div>
+<article id="post-content" class="post-content">Select a walkthrough from the left.</article>
+</section>
+</main>
+
+
+<footer class="site-footer container">
+<small>Add walkthroughs by editing <code>/posts/</code></small>
+</footer>
+
+
+<script src="/assets/app.js"></script>
+</body>
+</html>
