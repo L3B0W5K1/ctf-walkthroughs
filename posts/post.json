@@ -7,8 +7,10 @@
 "file": "example-ctf-1.md"
 },
 {
-"title": "Pickle rick",
-"slug": "pickle rick",
+"title": "Picklerick",
+"slug": "pickle-rick",
 "date": "2025-08-25",
+"tags": ["pickle"],
+"file": "post-2.md"
 }
 ]
