@@ -5,5 +5,10 @@
 "date": "2025-08-24",
 "tags": ["pwn","intro","binary"],
 "file": "example-ctf-1.md"
+},
+{
+"title": "Pickle rick",
+"slug": "pickle rick",
+"date": "2025-08-25",
 }
 ]
