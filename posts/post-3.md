@@ -48,7 +48,7 @@ shifting the unicode value for **~** one step to the left makes the unicode valu
 3. The second element in the flag has its unicode added to the newly created unicode from the first element
 4. then the **chr** function is applied to the newly created unicode made from 2 characters in the flag
 5. then the function does the same for each pair of elements in the list, using for loops with steps of 2
-6. The characters are joined together, which then returns us those japanese/chinese (I wouldnt know! 😫) symbols which represent the unicodes of which the function calculated
+6. The characters are joined together, which then returns us those japanese/chinese  symbols which represent the unicodes of which the function calculated
 
 This code reverses the process:
 
