@@ -1,10 +1,10 @@
 [
 {
-"title": "Example CTF — Pwn challenge (Intro)",
-"slug": "example-pwn-1",
+"title": "HTB Eureka ",
+"slug": "HTB Eureka",
 "date": "2025-08-24",
-"tags": ["pwn","intro","binary"],
-"file": "example-ctf-1.md"
+"tags": ["HTB","Eureka"],
+"file": "post-0.md"
 },
 {
 "title": "Picklerick",
