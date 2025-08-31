@@ -9,8 +9,15 @@
 {
 "title": "Tryhackme Pickle Rick",
 "slug": "pickle-rick",
-"date": "2025-08-25",
+"date": "2021-08-25",
 "tags": ["pickle"],
+"file": "post-1.md"
+}
+{
+"title": "Hacker101 - Micro CMS v1",
+"slug": "micro-cms",
+"date": "2021-08-25",
+"tags": ["microcms"],
 "file": "post-2.md"
 }
 ]
