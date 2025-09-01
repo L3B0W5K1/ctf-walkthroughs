@@ -10,8 +10,8 @@ and this piece of code:
      
 indented:
      
-```
-''.join(
+
+```''.join(
     [
         chr(
             (
@@ -27,6 +27,7 @@ indented:
     ]
 )
 ```
+
 so what this code does is its taken the flag as input (the flag that we want)
 
 and it has encrypted the flag returning this string: 灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷
