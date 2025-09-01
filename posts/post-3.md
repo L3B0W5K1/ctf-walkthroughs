@@ -2,30 +2,30 @@
 
 we are given this encrypted flag:
 
-    灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷慽
+```灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷慽```
     
 and this piece of code:
 
-    ''.join([chr((ord(flag[i]) << 8) + ord(flag[i + 1])) for i in range(0, len(flag), 2)])
+```''.join([chr((ord(flag[i]) << 8) + ord(flag[i + 1])) for i in range(0, len(flag), 2)])```
      
 indented:
      
-        ''.join(
-        [
-            chr(
-                (
-                    ord(flag[i]) << 8) +
-                    ord(flag[i + 1]
-                )
+```    ''.join(
+    [
+        chr(
+            (
+                ord(flag[i]) << 8) +
+                ord(flag[i + 1]
             )
-            for i in range(
-                0,
-                len(flag),
-                2
-            )
-        ]
-    )
-
+        )
+        for i in range(
+            0,
+            len(flag),
+            2
+        )
+    ]
+)
+```
 so what this code does is its taken the flag as input (the flag that we want)
 
 and it has encrypted the flag returning this string: 灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷
@@ -52,13 +52,14 @@ shifting the unicode value for **~** one step to the left makes the unicode valu
 
 This code reverses the process:
 
-        flag = '灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷慽'
-        out = ""
-        for l in flag:
-            l = ord(l) 
-            out += chr((l)>>8 & 0xFF00) 
-            out += chr((l & 0x00FF)) 
-        print(out)
+```flag = '灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸弰摤捤㤷慽'
+out = ""
+for l in flag:
+    l = ord(l) 
+    out += chr((l)>>8 & 0xFF00) 
+    out += chr((l & 0x00FF)) 
+print(out)
+```
 
 since each character here are made out of 2 characters from the flag the binary value for each character will have 16 bits whereas the ascii symbols in the flag will contain just 8 bits, this is a result of the shifting 
 
