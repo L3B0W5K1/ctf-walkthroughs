@@ -10,7 +10,8 @@ and this piece of code:
      
 indented:
      
-```    ''.join(
+```
+''.join(
     [
         chr(
             (
