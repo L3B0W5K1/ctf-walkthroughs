@@ -35,5 +35,36 @@ By trying to to find a blog id that does not exist we see the following:
 
 After searching google we can see its the Java framework **Spring Boot**.
 
+Using the wordlist **Java-Spring-Boot.txt** we can run: ```gobuster dir -u http://furni.htb/ -w Java-Spring-Boot.txt```, thus getting:
+
+```
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+actuator             (Status: 200) [Size: 2129]
+actuator/caches      (Status: 200) [Size: 20]
+actuator/env         (Status: 200) [Size: 6307]
+actuator/env/home    (Status: 200) [Size: 668]
+actuator/env/lang    (Status: 200) [Size: 668]
+actuator/env/path    (Status: 200) [Size: 668]
+actuator/features    (Status: 200) [Size: 467]
+actuator/health      (Status: 200) [Size: 15]
+actuator/configprops (Status: 200) [Size: 37195]
+actuator/conditions  (Status: 200) [Size: 184221]
+actuator/info        (Status: 200) [Size: 2]
+actuator/metrics     (Status: 200) [Size: 3356]
+actuator/loggers     (Status: 200) [Size: 101730]
+actuator/beans       (Status: 200) [Size: 202254]
+actuator/scheduledtasks (Status: 200) [Size: 54]
+actuator/mappings    (Status: 200) [Size: 35560]
+actuator/refresh     (Status: 405) [Size: 114]
+actuator/sessions    (Status: 400) [Size: 108]
+actuator/threaddump  (Status: 200) [Size: 135456]
+actuator/heapdump    (Status: 200) [Size: 80165337]
+Progress: 174 / 174 (100.00%)
+```
+
+Being that **heapdump** is a snapshot in time of all memory within a JVM, we can gather som information.
+
 
 
