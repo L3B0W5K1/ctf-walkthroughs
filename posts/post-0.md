@@ -119,5 +119,22 @@ logging.file.path=./
 We detect a running Eureka server along with its login credentials:
 <img width="1440" height="602" alt="Screenshot 2025-09-02 at 23 01 24" src="https://github.com/user-attachments/assets/8574246c-6f37-4667-b04b-020eb6679f3b" />
 
+Eureka is a service discovery system used in microservice architectures, where many small services communicate with each other instead of being a single app. Each service registers itself with Eureka so other services or a gateway can find it dynamically. If registration isn’t secured, we could exploit this by registering a fake service in the registry. The gateway, trusting Eureka, would route real user traffic to our fake service, letting us intercept sensitive data or inject malicious responses, like JavaScript, that the browser would execute.
+
+These are the instances:
+<img width="1420" height="214" alt="Screenshot 2025-09-02 at 23 10 56" src="https://github.com/user-attachments/assets/1b1c918b-16bd-4fc3-a135-e5f9f7d3cfe4" />
+
+And running ```cat /web/user-management-service/log/application.log``` we can see that miranda has logged into the ```USER-MANAGEMENT-SERVICE```:
+
+```
+...
+2025-04-09T11:37:01.878Z  INFO 1172 --- [USER-MANAGEMENT-SERVICE] [http-nio-127.0.0.1-8081-exec-1] c.e.Furni.Security.LoginSuccessLogger    : User 'miranda.wise@furni.htb' logged in successfully
+2025-04-09T11:38:01.878Z  INFO 1172 --- [USER-MANAGEMENT-SERVICE] [http-nio-127.0.0.1-8081-exec-1] c.e.Furni.Security.LoginSuccessLogger    : User 'miranda.wise@furni.htb' logged in successfully
+2025-04-09T11:39:01.878Z  INFO 1172 --- [USER-MANAGEMENT-SERVICE] [http-nio-127.0.0.1-8081-exec-1] c.e.Furni.Security.LoginSuccessLogger    : User 'miranda.wise@furni.htb' logged in successfully
+2025-04-09T11:40:01.878Z  INFO 1172 --- [USER-MANAGEMENT-SERVICE] [http-nio-127.0.0.1-8081-exec-1] c.e.Furni.Security.LoginSuccessLogger    : User 'miranda.wise@furni.htb' logged in successfully
+2025-04-09T11:41:01.878Z  INFO 1172 --- [USER-MANAGEMENT-SERVICE] [http-nio-127.0.0.1-8081-exec-1] c.e.Furni.Security.LoginSuccessLogger    : User 'miranda.wise@furni.htb' logged in successfully
+...
+```
+
 
 
