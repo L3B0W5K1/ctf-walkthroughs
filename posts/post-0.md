@@ -88,3 +88,36 @@ www-data    2927  0.5  8.9 2885240 357372 ?      Sl   13:22   2:27 java -Xms100m
 www-data    2932  0.4  8.8 2886144 353956 ?      Sl   13:22   1:41 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/Furni-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/Furni/src/main/resources/application.properties
 www-data    3959  0.3  7.6 2825896 303724 ?      Sl   13:22   1:34 java -Xms100m -Xmx200m -XX:+UseG1GC -jar target/demo-0.0.1-SNAPSHOT.jar --spring.config.location=/var/www/web/cloud-gateway/src/main/resources/application.yaml
 ```
+
+Locating and decompiling the the ```Furni-0.0.1-SNAPSHOT.jar``` we find within the ```application.properties```:
+
+
+```
+    spring.application.name=USER-MANAGEMENT-SERVICE
+spring.session.store-type=jdbc
+spring.cloud.inetutils.ignoredInterfaces=enp0s.*
+#Eureka
+eureka.client.service-url.defaultZone= http://EurekaSrvr:0scarPWDisTheB3st@localhost:8761/eureka/
+#Mysql
+spring.jpa.hibernate.ddl-auto=none
+spring.datasource.url=jdbc:mysql://localhost:3306/Furni_WebApp_DB
+spring.datasource.username=oscar190
+spring.datasource.password=0sc@r190_S0l!dP@sswd
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.properties.hibernate.format_sql=true
+#tomcat
+server.address=localhost
+server.port=8081
+# Enable proxy support
+server.forward-headers-strategy=native
+# Log
+logging.level.root=INFO
+logging.file.name=log/application.log
+logging.file.path=./
+```
+
+We detect a running Eureka server along with its login credentials:
+<img width="1440" height="602" alt="Screenshot 2025-09-02 at 23 01 24" src="https://github.com/user-attachments/assets/8574246c-6f37-4667-b04b-020eb6679f3b" />
+
+
+
