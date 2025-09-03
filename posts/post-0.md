@@ -136,5 +136,7 @@ And running ```cat /web/user-management-service/log/application.log``` we can se
 ...
 ```
 
+Thus we will create a fake service on the instance. This can be done with curl sending a POST request.
+
 
 
