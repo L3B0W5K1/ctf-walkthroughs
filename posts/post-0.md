@@ -200,3 +200,9 @@ snap  user.txt
 ```
 
 ## Root flag:
+
+Miranda is a part of the developers group:
+
+```uid=1001(miranda-wise) gid=1002(miranda-wise) groups=1002(miranda-wise),1003(developers)```
+
+
