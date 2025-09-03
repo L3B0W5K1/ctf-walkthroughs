@@ -1,5 +1,6 @@
 # HTB Eureka (Hard)
 
+## User flag:
 
 We get an ip and the first thing we do is nmap-scanning, we get:
 
@@ -191,3 +192,11 @@ We finally get:
 
 Cool. Decoding the URL-encoding and we get the password: ```IL!veT0Be&BeT0L0ve```
 
+Using ssh and we get the user flag:
+
+```
+miranda-wise@eureka:~$ ls
+snap  user.txt
+```
+
+## Root flag:
