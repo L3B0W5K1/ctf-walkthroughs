@@ -201,8 +201,15 @@ snap  user.txt
 
 ## Root flag:
 
-Miranda is a part of the developers group:
+Running pspy tool tool to monitor running processes without the need for root priveleges. Could not download it from miranda-wise so i sent pspy over with ```scp```. Running it we get the following output:
 
-```uid=1001(miranda-wise) gid=1002(miranda-wise) groups=1002(miranda-wise),1003(developers)```
+```
+2025/09/04 21:38:01 CMD: UID=0     PID=1675348 | /bin/bash /opt/log_analyse.sh /var/www/web/cloud-gateway/log/application.log 
+2025/09/04 21:38:01 CMD: UID=0     PID=1675347 | /bin/bash /opt/log_analyse.sh /var/www/web/user-management-service/log/application.log 
+2025/09/04 21:38:01 CMD: UID=0     PID=1675349 | /bin/bash /opt/log_analyse.sh /var/www/web/user-management-service/log/application.log 
+2025/09/04 21:38:01 CMD: UID=0     PID=1675350 | /bin/bash /opt/log_analyse.sh /var/www/web/cloud-gateway/log/application.log 
+2025/09/04 21:38:01 CMD: UID=0     PID=1675351 | /bin/bash /opt/log_analyse.sh /var/www/web/cloud-gateway/log/application.log
+```
+
 
 
