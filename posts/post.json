@@ -26,5 +26,12 @@
 "date": "2021-08-25",
 "tags": ["transformation"],
 "file": "post-3.md"
+},
+{
+"title": "2Million HTB",
+"slug": "2million",
+"date": "2021-09-07",
+"tags": ["2million"],
+"file": "2million.md"
 }
 ]
