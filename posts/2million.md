@@ -275,3 +275,5 @@ CVE-2023-0386-main  user.txt
 ```
 
 ## Root flag
+
+Navigating to website /var/www folder, not finding anything. But I do locate a folder /var/mail/
