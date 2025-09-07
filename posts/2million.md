@@ -10,20 +10,38 @@ eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/
 De-obfuscates to:
 
 ```
-function makeInviteCode(code) {
-    var formData = {"code": code};
+function makeInviteCode() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        data: formData,
-        url: '/api/v1/invite',
-        success: function(response){ console.log(response) },
-        error: function(response){ console.log(response) }
-    })
+ 
+url: '/api/v1/invite/how/to/generate',
+        success: function (response) {
+            console.log(response)
+        },
+        error: function (response) {
+            console.log(response)
+} })
 }
 ```
+```
+curl -sX POST http://2million.htb/api/v1/invite/how/to/generate | jq
+{
+  "0": 200,
+  "success": 1,
+  "data": {
+    "data": "Va beqre gb trarengr gur vaivgr pbqr, znxr n CBFG erdhrfg gb /ncv/i1/vaivgr/trarengr",
+    "enctype": "ROT13"
+  },
+  "hint": "Data is encrypted ... We should probbably check the encryption type in order to decrypt it..."
+}
 
-Doing a post request to the API gives us:
+```
+
+Decrypting with rot13 gives ```
+
+
+Doing a post request to the API gives us: **In order to generate the invite code, make a POST request to /api/v1/invite/generate**
 
 ```
 curl -sX POST http://2million.htb/api/v1/invite/generate | jq
