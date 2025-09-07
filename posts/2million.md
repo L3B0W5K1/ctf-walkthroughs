@@ -62,9 +62,11 @@ YEMTB-CB1XN-Q6GPU-AF6CE
 ```
 
 Now we can use this towards the 2million.htb/invite page:
+
 <img width="396" height="289" alt="Screenshot 2025-09-07 at 17 47 06" src="https://github.com/user-attachments/assets/a7ef18a1-5770-4ed0-aa80-18b9f05e72f6" />
 
 There is an access page where we can download a connection pack:
+
 <img width="478" height="542" alt="Screenshot 2025-09-07 at 17 48 58" src="https://github.com/user-attachments/assets/17a22c18-067e-4e2b-906c-3151b659d946" />
 
 
