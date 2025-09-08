@@ -271,7 +271,7 @@ We find some interesting credentials within the php .env file, we can use this t
 
 ```
 admin@2million:~$ ls
-CVE-2023-0386-main  user.txt
+user.txt
 ```
 
 ## Root flag
