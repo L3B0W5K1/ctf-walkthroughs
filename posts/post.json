@@ -7,6 +7,13 @@
 "file": "post-0.md"
 },
 {
+  "title": "HTB Strutted ",
+  "slug": "HTB Strutted",
+  "date": "2025-09-09",
+  "tags": ["HTB","Strutted"],
+  "file": "strutted.md"
+},
+{
 "title": "Tryhackme Pickle Rick",
 "slug": "pickle-rick",
 "date": "2021-08-25",
